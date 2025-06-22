@@ -1,0 +1,31 @@
+[
+  {
+    "articleId": 1,
+    "comments": [
+      {
+        "id": 1,
+        "user": "小明",
+        "content": "写得很详细，受益匪浅！",
+        "time": "2024-05-27 10:00",
+        "likes": 5,
+        "parentId": null
+      },
+      {
+        "id": 2,
+        "user": "小红",
+        "content": "请问WebGL通信有安全隐患吗？",
+        "time": "2024-05-27 11:00",
+        "likes": 2,
+        "parentId": null
+      },
+      {
+        "id": 3,
+        "user": "Mark",
+        "content": "@小红 可以通过消息校验增强安全性。",
+        "time": "2024-05-27 11:30",
+        "likes": 1,
+        "parentId": 2
+      }
+    ]
+  }
+] 

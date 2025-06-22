@@ -1,0 +1,22 @@
+[
+  {
+    "tab": "作者榜",
+    "list": [
+      { "name": "Animaking", "score": 5145 },
+      { "name": "CodeWizard", "score": 4450 },
+      { "name": "DevMaster", "score": 4300 },
+      { "name": "Perry Lu", "score": 4090 },
+      { "name": "Mark", "score": 3399 }
+    ]
+  },
+  {
+    "tab": "文章榜",
+    "list": [
+      { "name": "TypeScript 完全入门指南", "score": 3102, "id": 5 },
+      { "name": "Web 动画性能优化实践", "score": 2800, "id": 8 },
+      { "name": "构建高可用系统的设计原则", "score": 2500, "id": 9 },
+      { "name": "深入理解 React Hooks", "score": 2345, "id": 3 },
+      { "name": "从零搭建高效的 CI/CD 流水线", "score": 2200, "id": 10 }
+    ]
+  }
+] 
