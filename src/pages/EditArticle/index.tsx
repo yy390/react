@@ -22,7 +22,7 @@ const EditArticle: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [article, setArticle] = useState<Article | null>(null);
   const [imageLoading, setImageLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState<string>();
+  const [imageUrl, setImageUrl] = useState<string | null>();
 
   useEffect(() => {
     if (id) {
@@ -59,7 +59,7 @@ const EditArticle: React.FC = () => {
         desc: values.desc,
         tags: values.tags,
         isPublic: values.isPublic,
-        image: imageUrl || article.image,
+        image: imageUrl !== undefined ? imageUrl : article.image,
       };
       
       updateArticle(updatedArticle);

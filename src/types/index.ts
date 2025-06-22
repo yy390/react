@@ -5,7 +5,7 @@ export interface Article {
   content?: string;
   author: string;
   publishTime: string;
-  image: string;
+  image?: string | null;
   views: number;
   tags?: string[];
   isPublic?: boolean;
