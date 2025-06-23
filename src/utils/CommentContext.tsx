@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+import React, { createContext, useState, useContext, useEffect, useCallback, useMemo } from "react";
 import { Comment, Reply } from "../types";
 
 interface CommentContextType {
@@ -15,77 +15,69 @@ const CommentContext = createContext<CommentContextType | undefined>(undefined);
 export const CommentProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [comments, setComments] = useState<{ [articleId: string]: Comment[] }>({});
 
-  // 从 localStorage 加载评论数据
   useEffect(() => {
-    const savedComments = localStorage.getItem("allComments");
-    if (savedComments) {
+    const saved = localStorage.getItem("allComments");
+    if (saved) {
       try {
-        setComments(JSON.parse(savedComments));
+        setComments(JSON.parse(saved));
       } catch (error) {
-        console.error("Error loading comments:", error);
+        console.log("加载评论失败:", error);
         setComments({});
       }
     }
   }, []);
 
-  // 保存评论到 localStorage
   const saveComments = (newComments: { [articleId: string]: Comment[] }) => {
     setComments(newComments);
     localStorage.setItem("allComments", JSON.stringify(newComments));
   };
 
-  // 添加评论
-  const addComment = (articleId: string | number, comment: Comment) => {
-    const articleIdStr = articleId.toString();
-    const currentComments = comments[articleIdStr] || [];
-    const updatedComments = {
+  const addComment = useCallback((articleId: string | number, comment: Comment) => {
+    const id = articleId.toString();
+    const current = comments[id] || [];
+    const updated = {
       ...comments,
-      [articleIdStr]: [comment, ...currentComments]
+      [id]: [comment, ...current]
     };
-    saveComments(updatedComments);
-  };
+    saveComments(updated);
+  }, [comments]);
 
-  // 添加回复
-  const addReply = (articleId: string | number, commentId: string | number, reply: Reply) => {
-    const articleIdStr = articleId.toString();
-    const currentComments = comments[articleIdStr] || [];
-    const updatedComments = currentComments.map(comment => {
+  const addReply = useCallback((articleId: string | number, commentId: string | number, reply: Reply) => {
+    const id = articleId.toString();
+    const current = comments[id] || [];
+    const updated = current.map(comment => {
       if (comment.id === commentId) {
         return { ...comment, replies: [...comment.replies, reply] };
       }
       return comment;
     });
     
-    const newComments = {
+    saveComments({
       ...comments,
-      [articleIdStr]: updatedComments
-    };
-    saveComments(newComments);
-  };
+      [id]: updated
+    });
+  }, [comments]);
 
-  // 点赞评论
-  const likeComment = (articleId: string | number, commentId: string | number) => {
-    const articleIdStr = articleId.toString();
-    const currentComments = comments[articleIdStr] || [];
-    const updatedComments = currentComments.map(comment => {
+  const likeComment = useCallback((articleId: string | number, commentId: string | number) => {
+    const id = articleId.toString();
+    const current = comments[id] || [];
+    const updated = current.map(comment => {
       if (comment.id === commentId) {
         return { ...comment, likes: comment.likes + 1 };
       }
       return comment;
     });
     
-    const newComments = {
+    saveComments({
       ...comments,
-      [articleIdStr]: updatedComments
-    };
-    saveComments(newComments);
-  };
+      [id]: updated
+    });
+  }, [comments]);
 
-  // 点赞回复
-  const likeReply = (articleId: string | number, commentId: string | number, replyId: string | number) => {
-    const articleIdStr = articleId.toString();
-    const currentComments = comments[articleIdStr] || [];
-    const updatedComments = currentComments.map(comment => {
+  const likeReply = useCallback((articleId: string | number, commentId: string | number, replyId: string | number) => {
+    const id = articleId.toString();
+    const current = comments[id] || [];
+    const updated = current.map(comment => {
       if (comment.id === commentId) {
         const updatedReplies = comment.replies.map(reply => {
           if (reply.id === replyId) {
@@ -98,28 +90,28 @@ export const CommentProvider: React.FC<{ children: React.ReactNode }> = ({ child
       return comment;
     });
     
-    const newComments = {
+    saveComments({
       ...comments,
-      [articleIdStr]: updatedComments
-    };
-    saveComments(newComments);
-  };
+      [id]: updated
+    });
+  }, [comments]);
 
-  // 获取指定文章的评论
-  const getCommentsByArticleId = (articleId: string | number): Comment[] => {
-    const articleIdStr = articleId.toString();
-    return comments[articleIdStr] || [];
-  };
+  const getCommentsByArticleId = useCallback((articleId: string | number): Comment[] => {
+    const id = articleId.toString();
+    return comments[id] || [];
+  }, [comments]);
+
+  const value = useMemo(() => ({
+    comments,
+    addComment,
+    addReply,
+    likeComment,
+    likeReply,
+    getCommentsByArticleId
+  }), [comments, addComment, addReply, likeComment, likeReply, getCommentsByArticleId]);
 
   return (
-    <CommentContext.Provider value={{
-      comments,
-      addComment,
-      addReply,
-      likeComment,
-      likeReply,
-      getCommentsByArticleId
-    }}>
+    <CommentContext.Provider value={value}>
       {children}
     </CommentContext.Provider>
   );
@@ -128,7 +120,7 @@ export const CommentProvider: React.FC<{ children: React.ReactNode }> = ({ child
 export const useComments = () => {
   const context = useContext(CommentContext);
   if (!context) {
-    throw new Error("useComments must be used within a CommentProvider");
+    throw new Error("useComments必须在CommentProvider内使用");
   }
   return context;
 }; 

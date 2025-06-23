@@ -1,46 +1,127 @@
-# Getting Started with Create React App
+# 技术社区官网 - 新手友好版
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 项目简介
 
-## Available Scripts
+这是一个用 React + TypeScript 开发的技术社区网站，专门为新手程序员设计。你可以在这里：
+- 浏览技术文章
+- 发布自己的文章
+- 搜索感兴趣的内容
+- 查看热门文章排行榜
 
-In the project directory, you can run:
+## 技术栈（简单解释）
 
-### `npm start`
+- **React**: 用来构建用户界面的JavaScript库
+- **TypeScript**: 给JavaScript添加类型检查，让代码更安全
+- **Ant Design**: 现成的UI组件库，不用自己写样式
+- **React Router**: 处理页面跳转
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## 项目结构（新手视角）
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```
+src/
+├── components/          # 可复用的组件（就像积木块）
+│   ├── PublishModal.tsx    # 发布文章的弹窗
+│   ├── Navbar.tsx          # 顶部导航栏
+│   ├── ArticleTabs.tsx     # 文章列表
+│   └── ...
+├── pages/              # 页面组件（完整的页面）
+│   ├── HomePage/       # 首页
+│   ├── Article/        # 文章详情页
+│   └── ...
+├── utils/              # 工具函数和数据管理
+├── types/              # 数据类型定义
+└── router/             # 路由配置（页面跳转规则）
+```
 
-### `npm test`
+## 主要功能
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 1. 首页
+- 轮播图展示重要内容
+- 文章列表（支持热门/最新排序）
+- 技术标签筛选
+- 作者排行榜
 
-### `npm run build`
+### 2. 文章功能
+- 浏览文章列表
+- 查看文章详情
+- 发布新文章
+- 编辑自己的文章
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 3. 用户功能
+- 登录/注册
+- 个人文章管理
+- 搜索功能
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 如何运行项目
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 第一步：安装依赖
+```bash
+npm install
+```
+这行命令会下载项目需要的所有包（就像安装软件一样）
 
-### `npm run eject`
+### 第二步：启动项目
+```bash
+npm run dev
+```
+这行命令会启动开发服务器，然后在浏览器中打开项目
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### 第三步：访问项目
+打开浏览器，访问 `http://localhost:5173`
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 代码特点（新手友好）
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### 1. 详细注释
+每个文件都有详细的中文注释，解释每行代码的作用
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### 2. 简单命名
+变量和函数名都用简单易懂的中文或英文
 
-## Learn More
+### 3. 分步实现
+功能都是分步骤实现的，容易理解
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 4. 错误处理
+有完善的错误提示，不会让程序崩溃
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 学习建议
+
+### 新手学习路径：
+1. 先看 `App.tsx` - 了解整个应用的结构
+2. 再看 `HomePage` - 了解首页是如何组成的
+3. 然后看各个组件 - 了解具体功能是如何实现的
+4. 最后看数据管理 - 了解数据是如何传递的
+
+### 重点关注：
+- 组件的创建和使用
+- 数据的传递方式
+- 用户交互的处理
+- 样式的应用
+
+## 常见问题
+
+### Q: 为什么我的修改没有生效？
+A: 确保保存了文件，并且开发服务器正在运行
+
+### Q: 如何添加新功能？
+A: 先创建组件，然后在需要的地方引入使用
+
+### Q: 如何修改样式？
+A: 找到对应的组件，修改 style 属性或 CSS 文件
+
+## 项目亮点
+
+1. **新手友好**: 代码结构清晰，注释详细
+2. **功能完整**: 包含社区网站的基本功能
+3. **易于扩展**: 模块化设计，容易添加新功能
+4. **类型安全**: 使用TypeScript，减少错误
+
+## 联系方式
+
+如果遇到问题，可以：
+- 查看代码注释
+- 检查控制台错误信息
+- 参考React官方文档
+
+---
+
+**记住**: 编程是一个学习过程，不要害怕犯错，多尝试多练习！

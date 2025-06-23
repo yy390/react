@@ -22,7 +22,6 @@ const CommentList: React.FC<CommentListProps> = ({ articleId }) => {
 
   const comments = getCommentsByArticleId(articleId);
 
-  // 发表评论
   const handleSubmitComment = () => {
     if (!user.isLogin) {
       message.error("请先登录");
@@ -64,7 +63,6 @@ const CommentList: React.FC<CommentListProps> = ({ articleId }) => {
     message.success("点赞成功！");
   };
 
-  // 点赞回复
   const handleLikeReply = (commentId: number | string, replyId: number | string) => {
     if (!user.isLogin) {
       message.error("请先登录");
@@ -74,7 +72,6 @@ const CommentList: React.FC<CommentListProps> = ({ articleId }) => {
     message.success("点赞成功！");
   };
 
-  // 回复评论
   const handleReply = (commentId: number | string, authorName: string) => {
     if (!user.isLogin) {
       message.error("请先登录");
@@ -84,7 +81,6 @@ const CommentList: React.FC<CommentListProps> = ({ articleId }) => {
     setReplyingToAuthor(authorName);
   };
 
-  // 提交回复
   const handleSubmitReply = (commentId: number | string, authorName: string) => {
     if (!user.name) {
       message.error("用户信息不完整，请重新登录");
@@ -112,7 +108,6 @@ const CommentList: React.FC<CommentListProps> = ({ articleId }) => {
     message.success("回复成功！");
   };
 
-  // 取消回复
   const handleCancelReply = () => {
     setReplyContent("");
     setReplyingTo(null);
@@ -123,7 +118,6 @@ const CommentList: React.FC<CommentListProps> = ({ articleId }) => {
     <div>
       <Divider orientation="left">评论区</Divider>
       
-      {/* 发表评论 */}
       <div style={{ marginBottom: 24 }}>
         <TextArea
           rows={3}
@@ -144,7 +138,6 @@ const CommentList: React.FC<CommentListProps> = ({ articleId }) => {
         </div>
       </div>
 
-      {/* 评论列表 */}
       <List
         dataSource={comments}
         renderItem={(comment) => (
@@ -179,7 +172,6 @@ const CommentList: React.FC<CommentListProps> = ({ articleId }) => {
                     </Button>
                   </Space>
                   
-                  {/* 回复输入框 */}
                   {replyingTo === comment.id.toString() && (
                     <div style={{ marginTop: 12 }}>
                       <TextArea
@@ -205,7 +197,6 @@ const CommentList: React.FC<CommentListProps> = ({ articleId }) => {
                     </div>
                   )}
 
-                  {/* 回复列表 */}
                   {comment.replies.length > 0 && (
                     <div style={{ marginTop: 12, paddingLeft: 16, borderLeft: "2px solid #f0f0f0" }}>
                       {comment.replies.map((reply) => (

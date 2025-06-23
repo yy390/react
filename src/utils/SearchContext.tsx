@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useMemo } from "react";
 
 interface SearchContextType {
   searchKeyword: string;
@@ -10,8 +10,13 @@ const SearchContext = createContext<SearchContextType | undefined>(undefined);
 export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [searchKeyword, setSearchKeyword] = useState("");
 
+  const value = useMemo(() => ({
+    searchKeyword,
+    setSearchKeyword
+  }), [searchKeyword]);
+
   return (
-    <SearchContext.Provider value={{ searchKeyword, setSearchKeyword }}>
+    <SearchContext.Provider value={value}>
       {children}
     </SearchContext.Provider>
   );
@@ -20,7 +25,7 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 export const useSearch = () => {
   const context = useContext(SearchContext);
   if (!context) {
-    throw new Error("useSearch must be used within a SearchProvider");
+    throw new Error("useSearch必须在SearchProvider内使用");
   }
   return context;
 }; 

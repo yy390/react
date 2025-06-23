@@ -1,14 +1,8 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useState, useContext, useEffect, useCallback, useMemo } from "react";
 
 interface UserInfo {
   isLogin: boolean;
   name?: string;
-  avatar?: string;
-}
-
-interface UserData {
-  username: string;
-  password: string;
 }
 
 interface UserContextType {
@@ -20,26 +14,12 @@ interface UserContextType {
 
 const UserContext = createContext<UserContextType | null>(null);
 
-// 简单的密码哈希函数
 const hashPassword = (password: string) => {
-  return btoa(password); // 简单的base64编码，实际项目中应使用更安全的哈希
-};
-
-// 从localStorage获取用户数据
-const getUsers = (): UserData[] => {
-  const users = localStorage.getItem('users');
-  return users ? JSON.parse(users) : [];
-};
-
-// 保存用户数据到localStorage
-const saveUsers = (users: UserData[]) => {
-  localStorage.setItem('users', JSON.stringify(users));
+  return btoa(password);
 };
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<UserInfo>({ isLogin: false });
-
-  // 检查localStorage中是否有已登录用户
   useEffect(() => {
     const savedUser = localStorage.getItem('currentUser');
     if (savedUser) {
@@ -47,56 +27,64 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser({
         isLogin: true,
         name: userData.username,
-        avatar: `https://api.dicebear.com/7.x/miniavs/svg?seed=${encodeURIComponent(userData.username)}`
       });
     }
   }, []);
 
-  const login = async (username: string, password: string): Promise<boolean> => {
-    const users = getUsers();
+  const login = useCallback(async (username: string, password: string): Promise<boolean> => {
+    const users = localStorage.getItem('users');
+    const userList = users ? JSON.parse(users) : [];
     const hashedPassword = hashPassword(password);
-    const foundUser = users.find(u => u.username === username && u.password === hashedPassword);
     
+    const foundUser = userList.find((u: any) => 
+      u.username === username && u.password === hashedPassword
+    );
+  
     if (foundUser) {
       setUser({
         isLogin: true,
         name: username,
-        avatar: `https://api.dicebear.com/7.x/miniavs/svg?seed=${encodeURIComponent(username)}`
       });
       localStorage.setItem('currentUser', JSON.stringify({ username }));
       return true;
     }
     return false;
-  };
+  }, []);
 
-  const register = async (username: string, password: string): Promise<boolean> => {
-    const users = getUsers();
-    const existingUser = users.find(u => u.username === username);
-    
-    if (existingUser) {
-      return false; // 用户名已存在
+  const register = useCallback(async (username: string, password: string): Promise<boolean> => {
+    const users = localStorage.getItem('users');
+    const userList = users ? JSON.parse(users) : [];
+
+    if (userList.find((u: any) => u.username === username)) {
+      return false;
     }
+
     const hashedPassword = hashPassword(password);
-    users.push({ username, password: hashedPassword });
-    saveUsers(users);
-    
-    // 注册成功后自动登录
+    userList.push({ username, password: hashedPassword });
+    localStorage.setItem('users', JSON.stringify(userList));
+
     setUser({
       isLogin: true,
       name: username,
-      avatar: `https://api.dicebear.com/7.x/miniavs/svg?seed=${encodeURIComponent(username)}`
     });
     localStorage.setItem('currentUser', JSON.stringify({ username }));
     return true;
-  };
+  }, []);
 
-  const logout = () => {
+  const logout = useCallback(() => {
     setUser({ isLogin: false });
     localStorage.removeItem('currentUser');
-  };
+  }, []);
+
+  const value = useMemo(() => ({
+    user,
+    login,
+    register,
+    logout
+  }), [user, login, register, logout]);
 
   return (
-    <UserContext.Provider value={{ user, login, register, logout }}>
+    <UserContext.Provider value={value}>
       {children}
     </UserContext.Provider>
   );

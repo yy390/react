@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, Button, message, Switch, Select, Card, Space, Upload } from "antd";
-import { LoadingOutlined, PlusOutlined, InboxOutlined } from '@ant-design/icons';
+import { LoadingOutlined, PlusOutlined} from '@ant-design/icons';
 import type { UploadChangeParam } from 'antd/es/upload';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import { useParams, useNavigate } from "react-router-dom";
@@ -11,7 +11,6 @@ import { TECH_TAGS } from '../../utils/constants';
 
 const { TextArea } = Input;
 const { Option } = Select;
-const { Dragger } = Upload;
 
 const EditArticle: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -66,6 +65,7 @@ const EditArticle: React.FC = () => {
       message.success("文章更新成功！");
       navigate(`/article/${article.id}`);
     } catch (error) {
+      console.error("更新失败:", error);
       message.error("更新失败，请重试！");
     } finally {
       setLoading(false);

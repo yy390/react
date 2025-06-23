@@ -9,7 +9,7 @@ import { useArticles } from "../../utils/ArticleContext";
 const MyArticles: React.FC = () => {
   const { user } = useUser();
   const navigate = useNavigate();
-  const { articles, deleteArticle, updateArticle } = useArticles();
+  const { articles, deleteArticle } = useArticles();
 
   const myArticles = useMemo(() => {
     return articles.filter(a => a.author === user.name);
@@ -71,7 +71,11 @@ const MyArticles: React.FC = () => {
             >
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
-                  <a onClick={() => navigate(`/article/${item.id}`)} style={{ fontSize: 16, fontWeight: 'bold', color: 'rgba(0, 0, 0, 0.88)', marginRight: 8, cursor: 'pointer', maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block', flex: 1 }}>
+                  <a onClick={() => navigate(`/article/${item.id}`)} style={{ 
+                    fontSize: 16, fontWeight: 'bold', color: 'rgba(0, 0, 0, 0.88)', 
+                    marginRight: 8, cursor: 'pointer', maxWidth: '300px', overflow: 'hidden',
+                     textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block', flex: 1 
+                     }}>
                     {item.title}
                   </a>
                   <Tag color={item.isPublic ?? true ? 'green' : 'orange'}>

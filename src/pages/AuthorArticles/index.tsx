@@ -2,8 +2,7 @@ import React, { useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useArticles } from '../../utils/ArticleContext';
 import { List, Tag, Avatar, Button } from 'antd';
-import { EyeOutlined, LikeOutlined } from '@ant-design/icons';
-import { Article } from '../../types';
+import { EyeOutlined} from '@ant-design/icons';
 
 const AuthorArticlesPage: React.FC = () => {
   const { authorName } = useParams<{ authorName: string }>();

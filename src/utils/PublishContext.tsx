@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useMemo } from "react";
 
 interface PublishContextType {
   isPublishOpen: boolean;
@@ -10,8 +10,13 @@ const PublishContext = createContext<PublishContextType | undefined>(undefined);
 export const PublishProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isPublishOpen, setIsPublishOpen] = useState(false);
 
+  const value = useMemo(() => ({
+    isPublishOpen,
+    setIsPublishOpen
+  }), [isPublishOpen]);
+
   return (
-    <PublishContext.Provider value={{ isPublishOpen, setIsPublishOpen }}>
+    <PublishContext.Provider value={value}>
       {children}
     </PublishContext.Provider>
   );
@@ -20,7 +25,7 @@ export const PublishProvider: React.FC<{ children: React.ReactNode }> = ({ child
 export const usePublish = () => {
   const context = useContext(PublishContext);
   if (!context) {
-    throw new Error("usePublish must be used within a PublishProvider");
+    throw new Error("usePublish必须在PublishProvider内使用");
   }
   return context;
 }; 

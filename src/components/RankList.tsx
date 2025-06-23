@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Tabs, List, Avatar, Tag, message } from "antd";
+import { Tabs, List, Avatar, Tag } from "antd";
 import { useNavigate } from "react-router-dom";
 import { Article } from "../types";
 import { useSearch } from "../utils/SearchContext";
@@ -20,12 +20,13 @@ interface RankListProps {
 const rankColors = ["#FFD700", "#C0C0C0", "#CD7F32"];
 
 const RankList: React.FC<RankListProps> = ({ articles }) => {
-  const [activeKey, setActiveKey] = useState("0");
+  const [activeKey, setActiveKey] = useState("1");
   const navigate = useNavigate();
-  const { setSearchKeyword } = useSearch();
+  useSearch();
 
   const calculateRanks = (): RankTab[] => {
-    if (!articles || articles.length === 0) return [];
+    const sortedByViews = [...articles].sort((a, b) => b.views - a.views);
+    const sortedByLikes = [...articles].sort((a, b) => (b.likes ?? 0) - (a.likes ?? 0));
 
     // 作者榜计算
     const authorViews: { [key: string]: number } = {};
@@ -52,12 +53,10 @@ const RankList: React.FC<RankListProps> = ({ articles }) => {
   const data = calculateRanks();
 
   const handleClick = (item: RankItem) => {
-    // 文章榜，直接跳转详情页
     if (item.id) {
       navigate(`/article/${item.id}`);
       return;
     }
-    // 作者榜，跳转到作者文章列表页
     navigate(`/author/${item.name}`);
   };
 

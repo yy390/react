@@ -30,9 +30,5 @@ export interface Reply {
   author: string;
   publishTime: string;
   likes: number;
-  replyTo?: string; // 回复的用户名
+  replyTo?: string; 
 }
-
-export interface User {
-  // ... existing code ...
-} 

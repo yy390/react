@@ -16,7 +16,6 @@ const CarouselBanner: React.FC = () => {
   const [topArticles, setTopArticles] = useState<Article[]>([]);
 
   useEffect(() => {
-    // 从 localStorage 或 JSON 文件获取数据，而不是使用实时变化的 articles
     const savedArticles = localStorage.getItem("articles");
     if (savedArticles) {
       const articles = JSON.parse(savedArticles);
@@ -32,7 +31,7 @@ const CarouselBanner: React.FC = () => {
           setTopArticles(sorted.slice(0, 4));
         });
     }
-  }, []); // 只在组件挂载时执行一次
+  }, []);
 
   return (
     <Carousel autoplay autoplaySpeed={5000} dots>
